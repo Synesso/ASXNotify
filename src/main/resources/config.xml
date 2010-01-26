@@ -1,5 +1,5 @@
 <notifications>
-    <recipient email="chenandjem@loftinspace.com.au">
+    <recipient email="some@example.email.com">
         <trigger stock="BHP" when="below" price="41.00"/>
         <trigger stock="MGX" when="below" price="1.55"/>
     </recipient>
