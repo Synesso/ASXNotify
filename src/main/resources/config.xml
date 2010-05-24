@@ -1,6 +1,18 @@
 <notifications>
-    <recipient email="some@example.email.com">
-        <trigger stock="BHP" when="below" price="41.00"/>
-        <trigger stock="MGX" when="below" price="1.55"/>
+    <recipient email="blah@blah.com">
+        <trigger stock="HSP" above="5.60"/>
     </recipient>
+    <recipient email="blah@blah2.com">
+        <trigger stock="BHP" below="40.50" above="45.50"/>
+        <trigger stock="NAB" below="24.00" above="30.00"/>
+        <trigger stock="MGX" below="1.05" above="1.76"/>
+        <trigger stock="OZL" below="1.00" above="2.00"/>
+        <trigger stock="BLY" below="0.25" above="1.00"/>
+        <trigger stock="AAM" below="0.28" above="0.40"/>
+        <trigger stock="IMA" below="0.86" above="1.24"/>
+    </recipient>
+    <smtp>
+        <host>mail-relay.ext1.pacificaccess.com.au</host>
+        <fromAddress>jeremy.mawson@sensis.com.au</fromAddress>
+    </smtp>
 </notifications>
