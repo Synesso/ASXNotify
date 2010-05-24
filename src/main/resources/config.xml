@@ -12,7 +12,7 @@
         <trigger stock="IMA" below="0.86" above="1.24"/>
     </recipient>
     <smtp>
-        <host>mail-relay.ext1.pacificaccess.com.au</host>
-        <fromAddress>jeremy.mawson@sensis.com.au</fromAddress>
+        <host>yoursmtphost</host>
+        <fromAddress>fromaddress</fromAddress>
     </smtp>
 </notifications>
