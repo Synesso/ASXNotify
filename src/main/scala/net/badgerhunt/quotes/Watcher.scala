@@ -1,6 +1,7 @@
 package net.badgerhunt.quotes
 
 import java.util.{Timer, TimerTask, Date}
+import notify.Email
 
 object Watcher extends Application {
   val TWENTY_MINUTES = 1000 * 60 * 20l
@@ -18,20 +19,6 @@ object Watcher extends Application {
     }
   }
 
-
-
-  // set of all stocks
-  // set of all emails
-  // map email -> notification rule
-
-
-  // map stock->price
-  // for each email
-  //   map notification rule -> optional failure message
-  //   send email
-
-
-
   val timer = new Timer(false)
   timer.schedule(UpdateAndEmailTask, new Date, TWENTY_MINUTES)
 
@@ -46,6 +33,7 @@ object Watcher extends Application {
           val (email, rules) = rulesForEmail
           val messages = rules.flatMap(rule => rule.notification(quotes(rule.stock)))
           println("%s -> %s".format(email, messages))
+          Email.notify(email, messages)
         }
       } else {
         println("Market is closed")
