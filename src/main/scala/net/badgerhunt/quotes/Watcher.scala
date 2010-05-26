@@ -24,7 +24,7 @@ object Watcher extends Application {
 
   object UpdateAndEmailTask extends TimerTask {
     def run() = {
-      if (!MarketTimes.marketIsOpen) {
+      if (MarketTimes.marketIsOpen) {
         println("Updating prices")
         val quotes = QuoteSource.current(stocks).foldLeft(Map[String,Double]()){(acc,next)=>acc(next.code)=next.closingPrice}
         quotes.map(quote => "\t%s -> %f".format(quote._1, quote._2)).toList.sort(_<_).foreach(println)
