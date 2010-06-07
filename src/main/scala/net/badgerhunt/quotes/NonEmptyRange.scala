@@ -27,6 +27,7 @@ case class NonEmptyRange(bottom: Option[Double], top: Option[Double]) {
   def union(range: NonEmptyRange) = NonEmptyRange(
       if (bottom == None || range.bottom == None) None else Some(Math.min(bottom.get, range.bottom.get)),
       if (top == None || range.top == None) None else Some(Math.max(top.get, range.top.get)))
+  def includes(value: Double) = bottom.map(value >= _).getOrElse(true) && top.map(value <= _).getOrElse(true)
 
   override def toString = fold("above %f".format(_), "below %f".format(_)).mkString(" and ")
 }

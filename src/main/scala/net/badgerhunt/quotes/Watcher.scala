@@ -4,12 +4,13 @@ import java.util.{Timer, TimerTask, Date}
 import notify.Email
 
 object Watcher extends Application {
-  val TWENTY_MINUTES = 1000 * 60 * 20l
+  val TEN_MINUTES = 1000 * 60 * 10l
 
   val config = ConfigParser.parse
   val emails = config.foldLeft(Set(): Set[String]) { _ + _.email }
   val stocks = config.foldLeft(Set(): Set[String]) { _ + _.stock }
   val rulesByEmail = config.foldLeft(Map[String, List[NotifyRule]]()) { (acc, next) => acc(next.email) = next :: acc.getOrElse(next.email, Nil) }
+  var alertedRules = List[NotifyRule]()
 
   println("Notification rules:")
   rulesByEmail.foreach{rule =>
@@ -20,7 +21,7 @@ object Watcher extends Application {
   }
 
   val timer = new Timer(false)
-  timer.schedule(UpdateAndEmailTask, new Date, TWENTY_MINUTES)
+  timer.schedule(UpdateAndEmailTask, new Date, TEN_MINUTES)
 
   object UpdateAndEmailTask extends TimerTask {
     def run() = {
@@ -31,7 +32,11 @@ object Watcher extends Application {
 
         rulesByEmail.foreach{rulesForEmail =>
           val (email, rules) = rulesForEmail
-          val messages = rules.flatMap(rule => rule.notification(quotes(rule.stock)))
+          val activeRules = rules -- alertedRules
+          val firingRules = activeRules.filter(rule => !rule.satisfiedWith(quotes(rule.stock)))
+          val messages = firingRules.flatMap(rule => rule.notification(quotes(rule.stock)))
+          alertedRules = alertedRules ++ firingRules
+          alertedRules = alertedRules.filter(rule => !rule.satisfiedWith(quotes(rule.stock)))
           println("%s -> %s".format(email, messages))
           Email.notify(email, messages)
         }
@@ -41,5 +46,3 @@ object Watcher extends Application {
     }
   }
 }
-
-

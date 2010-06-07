@@ -11,5 +11,6 @@ case class NotifyRule(email: String, stock: String, range: NonEmptyRange) {
   } else None
 
   def notification(price: Double): List[String] = range.fold(belowBreach(price, _), aboveBreach(price, _)).flatMap(_.toList)
+  def satisfiedWith(price: Double) = range includes price
 
 }
