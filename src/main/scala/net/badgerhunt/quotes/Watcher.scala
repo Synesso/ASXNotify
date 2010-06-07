@@ -38,7 +38,7 @@ object Watcher extends Application {
           alertedRules = alertedRules ++ firingRules
           alertedRules = alertedRules.filter(rule => !rule.satisfiedWith(quotes(rule.stock)))
           println("%s -> %s".format(email, messages))
-          Email.notify(email, messages)
+          if (messages.size > 0) Email.notify(email, messages)
         }
       } else {
         println("Market is closed")
